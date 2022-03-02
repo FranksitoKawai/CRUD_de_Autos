@@ -1,7 +1,6 @@
-package kotlinforandroid.book.cruddeautos
+package kotlinforandroid.book.telefonia
 
 import android.Manifest
-import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -17,14 +16,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import kotlinx.android.synthetic.main.activity_auto.*
-import kotlinx.android.synthetic.main.activity_nuevo_auto.*
+import kotlinx.android.synthetic.main.activity_nuevo_telefono.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class NuevoAutoActivity : AppCompatActivity() {
+class NuevoTelefonoActivity : AppCompatActivity() {
 
     private val CAMERA_REQUEST_CODE = 100
     private val STORAGE_REQUEST_CODE = 101
@@ -39,59 +37,63 @@ class NuevoAutoActivity : AppCompatActivity() {
     private var storagePermissions = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     private var imageUri: Uri? = Uri.EMPTY
-    private var imageAuto:String =""
+    private var imageTelefono:String =""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_nuevo_auto)
+        setContentView(R.layout.activity_nuevo_telefono)
 
-        var idAuto: Int? = null
-        if (intent.hasExtra("auto")){
-            val auto = intent.extras?.getSerializable("auto") as Auto
-            nuevo_nombre_auto.setText(auto.nombre)
-            nuevo_color_auto.setText(auto.color)
-            nuevo_precio_auto.setText(auto.precio.toString())
-            nuevo_descripcion_auto.setText(auto.descripcion)
-            if (auto.imagen==""){
+        var idTelefono: Int? = null
+        if (intent.hasExtra("Telefono")){
+            val telefono = intent.extras?.getSerializable("Telefono") as Telefono
+            Nombre.setText(telefono.nombre)
+            Pantalla.setText(telefono.pantalla)
+            Procesador.setText(telefono.procesador)
+            _almacenamiento.setText(telefono.almacenamiento)
+            bateria.setText(telefono.bateria)
+            Comentario.setText(telefono.comentario)
+            if (telefono.imagen==""){
 
             }else{
-                nuevo_imagen_auto.setImageURI(auto.imagen.toUri())
-                imageAuto = auto.imagen
+                nueva_imagen.setImageURI(telefono.imagen.toUri())
+                imageTelefono = telefono.imagen
             }
             Log.d("imageUri","-----------------")
             Log.d("imageUri",imageUri.toString())
-            idAuto = auto.idAuto
+            idTelefono = telefono.idTelefono
         }
 
         val dataBase = AppDataBase.getDatabase(this)
 
-        nuevo_imagen_auto.setOnClickListener {
+        nueva_imagen.setOnClickListener {
             imagePickDialog();
         }
 
         btn_guardar.setOnClickListener {
-            val nombre = nuevo_nombre_auto.text.toString()
-            val color = nuevo_color_auto.text.toString()
-            val precio = nuevo_precio_auto.text.toString()
-            val descripcion = nuevo_descripcion_auto.text.toString()
-            var imagen:String = imageAuto
+            val nombre = Nombre.text.toString()
+            val pantalla = Pantalla.text.toString()
+            val procesador = Procesador.text.toString()
+            val almacenamiento = _almacenamiento.text.toString()
+            val bateria = bateria.text.toString()
+            val comentario = Comentario.text.toString()
+            var imagen:String = imageTelefono
             if(imageUri!= Uri.EMPTY){
                 imagen = imageUri.toString()
             }
 
-            val auto = Auto(nombre,imagen,descripcion,color,precio.toDouble())
-            if(idAuto != null){
+            val newTelefono = Telefono(nombre,imagen,pantalla,procesador, almacenamiento, bateria, comentario)
+            if(idTelefono != null){
                 CoroutineScope(Dispatchers.IO).launch {
-                    auto.idAuto = idAuto
-                    dataBase.autos().update(auto)
+                    newTelefono.idTelefono = idTelefono
+                    dataBase.telefonos().update(newTelefono)
 
-                    this@NuevoAutoActivity.finish()
+                    this@NuevoTelefonoActivity.finish()
                 }
             }else{
                 CoroutineScope(Dispatchers.IO).launch {
-                    dataBase.autos().insertAll(auto)
+                    dataBase.telefonos().insertAll(newTelefono)
 
-                    this@NuevoAutoActivity.finish()
+                    this@NuevoTelefonoActivity.finish()
                 }
             }
         }
@@ -235,7 +237,7 @@ class NuevoAutoActivity : AppCompatActivity() {
                     imageUri = resultUri
                     //set Image
                     Log.d("imageUri",imageUri.toString())
-                    nuevo_imagen_auto.setImageURI(imageUri)
+                    nueva_imagen.setImageURI(imageUri)
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     //ERROR
                     val error: Exception = result.getError()

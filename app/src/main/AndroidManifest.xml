@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kotlinforandroid.book.cruddeautos">
+    package="kotlinforandroid.book.telefonia">
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -13,13 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CRUDDeAutos">
         <activity
-            android:name=".NuevoAutoActivity"
+            android:name="kotlinforandroid.book.telefonia.NuevoTelefonoActivity"
             android:exported="false" />
         <activity
-            android:name=".AutoActivity"
+            android:name="kotlinforandroid.book.telefonia.TelefonoActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="kotlinforandroid.book.telefonia.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,13 +1,13 @@
-package kotlinforandroid.book.cruddeautos
+package kotlinforandroid.book.telefonia
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Auto::class], version = 1)
+@Database(entities = [Telefono::class], version = 1)
 abstract class AppDataBase:RoomDatabase() {
-    abstract fun autos():AutoDao
+    abstract fun telefonos():TelefonoDao
     companion object{
         @Volatile
         private var INSTANCE: AppDataBase?=null

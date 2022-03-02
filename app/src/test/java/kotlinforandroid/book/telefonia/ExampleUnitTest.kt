@@ -1,4 +1,4 @@
-package kotlinforandroid.book.cruddeautos
+package kotlinforandroid.book.telefonia
 
 import org.junit.Test
 
